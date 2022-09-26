@@ -1,5 +1,6 @@
-const fetch = require('node-fetch')
-const cheerio = require('cheerio')
+process.binding('http_parser').HTTPParser = require('http-parser-js').HTTPParser;
+const fetch = require('node-fetch');
+const cheerio = require('cheerio');
 const { argv } = require('process');
 const argumentURL = argv[2]
 
@@ -15,7 +16,7 @@ async function getHTML(url) {
 
 function getMetadata($) {
   const title = $('title').text()
-  const description = $('meta[name="description"]')
+  const description = $('meta[name="description"]').attr('content')
   return { title, description }
 }
 
@@ -37,8 +38,7 @@ async function getSEOContent(html) {
 
 async function crawler(url = argumentURL) {
   const html = await getHTML(url)
-  const result = await getSEOContent(html)
-  return result
+  return await getSEOContent(html)
 }
 
 module.exports = {
