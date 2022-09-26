@@ -1,19 +1,18 @@
-const { send } = require('micro')
-const microCors = require('micro-cors')
 const { crawler } =  require('./crawler')
 const { validUrl } = require('./utils')
 
-const cors = microCors()
-
-const app = async (request, response) => {
+async function app(request, response) {
   try {
     const { url } = request.query
-    const isValid = validUrl(url)
-    if(!isValid) throw Error()
-    const result = await crawler(url)
-    send(response, 200, result)
+    console.log('HIT!')
+    // const isValid = validUrl(url)
+    // if(!isValid) throw Error()
+    // const result = await crawler(url)
+    send(response)
+    response.status(200).send({ url })
   } catch {
-    send(response, 400)
+    response.status(500).send('oops')
   }
 }
-module.exports = cors(app)
+
+module.exports = app
