@@ -38,7 +38,8 @@ async function getSEOContent(html) {
 
 async function crawler(url = argumentURL) {
   const html = await getHTML(url)
-  return await getSEOContent(html)
+  const result = await getSEOContent(html)
+  return result
 }
 
 module.exports = {
